@@ -19,7 +19,6 @@ export const Content = styled.div`
   width: 80%;
   height: 80vh;
   overflow: hidden;
-  box-shadow: inset 0 0 100px black;
 `;
 
 export const Header = styled.div`
@@ -53,6 +52,11 @@ export const Container = styled.div`
 export const Row = styled.div`
   display: flex;
   justify-content: space-around;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
   margin: 64px 0;
 `;
 

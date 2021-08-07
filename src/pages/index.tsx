@@ -17,7 +17,6 @@ export default function Home() {
     panzoom(el, {
       minZoom: 1,
       maxZoom: 1,
-      transformOrigin: { x: 0.5, y: 0.5 },
     });
   }
 
