@@ -8,10 +8,10 @@ export const GlobalStyle = createGlobalStyle`
 
     --blue-light: #6933FF;
 
-    --text-title: #363F5F;
-    --text-body: #969CB3;
+    --text-title: #FFF;
+    --text-body: #FFF;
 
-    --background: #F0F2F5;
+    --background: #111111;
     --shape: #FFFFFF;
   }
 
@@ -48,6 +48,10 @@ export const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  ul, ol, li {
+    list-style: none;
   }
 
   [disabled] {

@@ -1,8 +1,17 @@
 import React from 'react';
-import { Container } from './../../styles/globalComponents';
+import { Container, Content, Nav } from './styles';
 
 function Header() {
-  return <Container>Header</Container>;
+  return (
+    <Container>
+      <Content>
+        <Nav>
+          <li>Início</li>
+          <li>Sobre</li>
+        </Nav>
+      </Content>
+    </Container>
+  );
 }
 
 export { Header };
