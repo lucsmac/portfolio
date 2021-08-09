@@ -1,37 +1,47 @@
+import { GetStaticProps, GetStaticPropsResult } from 'next';
 import Head from 'next/head';
-import { useEffect, useRef } from 'react';
-import panzoom from 'panzoom';
+import Image from 'next/image';
 import {
   Main,
   Content,
-  Header,
-  Container,
-  Row,
-  Block,
+  ProjectsSlide,
+  CardWrapper,
+  CardTitle,
 } from 'styles/pages/Home';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-export default function Home() {
-  const container = useRef<HTMLDivElement>(null);
+type IProject = {
+  id: number;
+  name: string;
+  slug: string;
+  nameSplit: string[];
+  year: number;
+  category: string;
+  warning: {
+    have: boolean;
+    msg: string;
+  };
+  imgsFolder: string;
+  mainImg: string;
+  uiImgs: string[];
+  tools: string[];
+  description: string[];
+  siteLink: string;
+  codeLink: string;
+  next: {
+    id: number;
+    name: string;
+    slug: string;
+    img: string;
+    nameSplit: string[];
+  };
+};
 
-  function setupPanzoom(el: HTMLElement) {
-    panzoom(el, {
-      minZoom: 1,
-      maxZoom: 1,
-    });
-  }
+interface IHomeProps {
+  projects: IProject[];
+}
 
-  useEffect(() => {
-    container.current && setupPanzoom(container.current);
-  }, []);
-
-  const imagesMap = [
-    [1, 2, 3, 4, 5, 6],
-    [3, 4, 5, 6, 1, 2],
-    [5, 6, 1, 2, 3, 4],
-    [2, 3, 4, 5, 6, 1],
-    [4, 5, 6, 1, 2, 3],
-  ];
-
+export default function Home({ projects }: IHomeProps) {
   return (
     <div>
       <Head>
@@ -45,20 +55,54 @@ export default function Home() {
 
       <Main>
         <Content>
-          <Header>Explore os projetos clicando e arrastando</Header>
-          <Container ref={container}>
-            {imagesMap.map((line, index) => {
-              return (
-                <Row key={`${index}`}>
-                  {line.map(item => {
-                    return <Block key={`${index}-${item}`} index={--item} />;
-                  })}
-                </Row>
-              );
-            })}
-          </Container>
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={swiper => console.log(swiper)}
+          >
+            {projects.map(project => (
+              <SwiperSlide key={project.id}>
+                <ProjectsSlide>
+                  <CardWrapper>
+                    <CardTitle>
+                      <h2 className="title">{project.nameSplit[0]}</h2>
+                    </CardTitle>
+
+                    <div className="card__img">
+                      <span className="year">{project.year}</span>
+                      <Image
+                        src={`/images/sites/${project.slug}/${project.mainImg}`}
+                        alt={project.name}
+                        width={500}
+                        height={300}
+                      />
+                      <span className="type">{project.category}</span>
+                    </div>
+
+                    <CardTitle>
+                      <h2 className="title">{project.nameSplit[1]}</h2>
+                    </CardTitle>
+                  </CardWrapper>
+                </ProjectsSlide>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </Content>
       </Main>
     </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<IHomeProps>
+> => {
+  const response = await fetch('http://localhost:3000/api/projects');
+  const projects: IProject[] = await response.json();
+
+  return {
+    props: {
+      projects,
+    },
+  };
+};

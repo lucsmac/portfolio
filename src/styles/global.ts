@@ -46,6 +46,10 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 600;
   }
 
+  h1, h2, h3, h4, h5, h6, p, span, li, b, i, em, strong, div {
+    color: var(--text-body);
+  }
+
   button {
     cursor: pointer;
   }
